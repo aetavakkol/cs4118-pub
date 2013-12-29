@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
-<html class="no-js" lang="en" >
+<html class="no-js" lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -10,17 +10,86 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/foundation.css">
 
-    <script src="js/vendor/modernizr.js"></script>
-
+    <script src="js/vendor/custom.modernizr.js"></script>
+    
+    <style>
+        @font-face {
+            font-family: 'BLOKKRegular';
+            src: url('fonts/BLOKKRegular.eot');
+            src: url('fonts/BLOKKRegular.eot?#iefix') format('embedded-opentype'),
+                 url('fonts/BLOKKRegular.woff') format('woff'),
+                 url('fonts/BLOKKRegular.svg#BLOKKRegular') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+        p {
+            font-family: BLOKKRegular;
+            font-size: 10px;
+        }
+        .marker {
+            visibility: hidden;
+        }
+        h4 {
+            position: relative;
+            top: 30px;
+        }
+        #container {
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-
+    <div data-magellan-expedition="fixed" class="smooth" style="position:fixed;top:0">
+        <dl class="sub-nav">
+            <dd data-magellan-arrival="preface" class="active"><a href="#preface">Preface</a></dd>
+            <dd data-magellan-arrival="step0"><a href="#step0">Step 0</a></dd>
+            <dd data-magellan-arrival="step1"><a href="#step1">Step 1</a></dd>
+        </dl>
+    </div>
     
+    <div id="container">
+        <h4>Setting up an Arch Linux (x64) Virtual Machine in VMware</h4>
+
+        <p></p>
+        
+        <h5 data-magellan-destination="preface" id="preface" class="marker">A</h5>
+        <h5>Preface</h5>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec augue non mi auctor elementum. Vestibulum id orci ac lectus auctor accumsan sed nec leo. Etiam volutpat fringilla suscipit. Donec ipsum libero, euismod a pulvinar nec, placerat id ligula. Suspendisse potenti. Fusce ac fermentum nulla. Morbi lacus velit, fringilla vel facilisis a, posuere eu urna. Aenean vel ullamcorper ipsum, ac sagittis tellus. Aliquam ligula neque, auctor a placerat vitae, auctor non orci. Maecenas a turpis orci. Praesent hendrerit adipiscing nisi, eleifend euismod mauris fermentum sit amet. Vestibulum scelerisque tristique ornare. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+
+            Integer tellus massa, hendrerit sit amet nulla in, egestas facilisis ipsum. Ut scelerisque ultricies ligula pretium hendrerit. Nulla sed purus in urna dapibus pulvinar. Maecenas sit amet elementum tellus. Etiam facilisis facilisis mauris. Nunc commodo, massa sit amet dictum dictum, augue felis venenatis urna, nec elementum mauris eros bibendum lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam quis magna ligula. Vestibulum vel urna a est dignissim eleifend venenatis sit amet felis. Sed eros odio, tempus non scelerisque viverra, sollicitudin id nunc. Morbi vestibulum metus sit amet nulla gravida porttitor. Nunc nec dolor sit amet nisl lacinia luctus.
+
+            Vivamus mollis, lectus vitae volutpat consequat, dolor mi aliquam quam, sed ornare nulla ipsum posuere mauris. Integer aliquam luctus lacus, quis aliquet ipsum pulvinar vitae. Nullam bibendum consequat convallis. Nam eu metus nibh. Sed hendrerit quis augue quis vulputate. Praesent suscipit suscipit urna a ultricies. Maecenas mollis ac lacus vitae pulvinar. Curabitur ac placerat velit. Nullam a leo ipsum. Phasellus consectetur condimentum orci, non adipiscing felis lacinia ac.
+        </p>
+
+        <h5 data-magellan-destination="step0" id="step0" class="marker">A</h5>
+        <h5>Step 0</h5>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec augue non mi auctor elementum. Vestibulum id orci ac lectus auctor accumsan sed nec leo. Etiam volutpat fringilla suscipit. Donec ipsum libero, euismod a pulvinar nec, placerat id ligula. Suspendisse potenti. Fusce ac fermentum nulla. Morbi lacus velit, fringilla vel facilisis a, posuere eu urna. Aenean vel ullamcorper ipsum, ac sagittis tellus. Aliquam ligula neque, auctor a placerat vitae, auctor non orci. Maecenas a turpis orci. Praesent hendrerit adipiscing nisi, eleifend euismod mauris fermentum sit amet. Vestibulum scelerisque tristique ornare. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+
+            Integer tellus massa, hendrerit sit amet nulla in, egestas facilisis ipsum. Ut scelerisque ultricies ligula pretium hendrerit. Nulla sed purus in urna dapibus pulvinar. Maecenas sit amet elementum tellus. Etiam facilisis facilisis mauris. Nunc commodo, massa sit amet dictum dictum, augue felis venenatis urna, nec elementum mauris eros bibendum lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam quis magna ligula. Vestibulum vel urna a est dignissim eleifend venenatis sit amet felis. Sed eros odio, tempus non scelerisque viverra, sollicitudin id nunc. Morbi vestibulum metus sit amet nulla gravida porttitor. Nunc nec dolor sit amet nisl lacinia luctus.
+
+            Vivamus mollis, lectus vitae volutpat consequat, dolor mi aliquam quam, sed ornare nulla ipsum posuere mauris. Integer aliquam luctus lacus, quis aliquet ipsum pulvinar vitae. Nullam bibendum consequat convallis. Nam eu metus nibh. Sed hendrerit quis augue quis vulputate. Praesent suscipit suscipit urna a ultricies. Maecenas mollis ac lacus vitae pulvinar. Curabitur ac placerat velit. Nullam a leo ipsum. Phasellus consectetur condimentum orci, non adipiscing felis lacinia ac.
+        </p>
+
+        <h5 data-magellan-destination="step1" id="step1" class="marker">A</h5>
+        <h5>Step 1</h5>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec augue non mi auctor elementum. Vestibulum id orci ac lectus auctor accumsan sed nec leo. Etiam volutpat fringilla suscipit. Donec ipsum libero, euismod a pulvinar nec, placerat id ligula. Suspendisse potenti. Fusce ac fermentum nulla. Morbi lacus velit, fringilla vel facilisis a, posuere eu urna. Aenean vel ullamcorper ipsum, ac sagittis tellus. Aliquam ligula neque, auctor a placerat vitae, auctor non orci. Maecenas a turpis orci. Praesent hendrerit adipiscing nisi, eleifend euismod mauris fermentum sit amet. Vestibulum scelerisque tristique ornare. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+
+            Integer tellus massa, hendrerit sit amet nulla in, egestas facilisis ipsum. Ut scelerisque ultricies ligula pretium hendrerit. Nulla sed purus in urna dapibus pulvinar. Maecenas sit amet elementum tellus. Etiam facilisis facilisis mauris. Nunc commodo, massa sit amet dictum dictum, augue felis venenatis urna, nec elementum mauris eros bibendum lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam quis magna ligula. Vestibulum vel urna a est dignissim eleifend venenatis sit amet felis. Sed eros odio, tempus non scelerisque viverra, sollicitudin id nunc. Morbi vestibulum metus sit amet nulla gravida porttitor. Nunc nec dolor sit amet nisl lacinia luctus.
+
+            Vivamus mollis, lectus vitae volutpat consequat, dolor mi aliquam quam, sed ornare nulla ipsum posuere mauris. Integer aliquam luctus lacus, quis aliquet ipsum pulvinar vitae. Nullam bibendum consequat convallis. Nam eu metus nibh. Sed hendrerit quis augue quis vulputate. Praesent suscipit suscipit urna a ultricies. Maecenas mollis ac lacus vitae pulvinar. Curabitur ac placerat velit. Nullam a leo ipsum. Phasellus consectetur condimentum orci, non adipiscing felis lacinia ac.
+        </p>
+    </div>
 
     <script src="js/vendor/jquery.js"></script>
+    <script src="js/jquery.smooth-scroll.js"></script>
     <script src="js/foundation.min.js"></script>
+    <script src="js/foundation/foundation.magellan.js"></script>
     <script>
-        $(document).foundation();
+        $(document).foundation('magellan');
+        $('.smooth a').smoothScroll({offset:-6});
     </script>
 </body>
 </html>
