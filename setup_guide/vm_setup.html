@@ -36,6 +36,9 @@
         i {
             font-size: 90%;
         }
+        ul {
+            padding-left: 10px;
+        }
         /* This div contains the entire page and applies an easthetically
            pleasing offset to the text inside */
         #container {
@@ -49,15 +52,16 @@
     <div data-magellan-expedition="fixed" class="smooth"
         style="position:fixed;top:0">
         <dl class="sub-nav">
-            <dd data-magellan-arrival="preface" class="active"><a
-            href="#preface">Preface</a></dd>
-            <dd data-magellan-arrival="step0"><a href="#step0">Step 0</a></dd>
             <!-- Copy a dd element like the one below. The name of the
                  data-magellan-arrival attribute and the href attribute of the
                  a tag should be unique and match (the href should be
                  preceeded by a '#'). The text of the a tag does not matter.
                  -->
+            <dd data-magellan-arrival="preface" class="active"><a
+            href="#preface">Preface</a></dd>
+            <dd data-magellan-arrival="step0"><a href="#step0">Step 0</a></dd>
             <dd data-magellan-arrival="step1"><a href="#step1">Step 1</a></dd>
+            <dd data-magellan-arrival="step2"><a href="#step2">Step 2</a></dd>
         </dl>
     </div>
 
@@ -122,51 +126,60 @@
             Virtual Machine). The new window will walk you through configuring
             the virutal hardware and selecting the ISO. For the hardware,
             we suggest:
-            <ul>
-                <li>64 GB (dynamic, single file) disk</li>
-                <li>At least 2 GB RAM</li>
-                <li>At least 2 cores</li>
-            </ul>
-            Once you're booted into the Arch Live CD, proceed to Step 1.
+        </p>
+        <ul>
+            <li>64 GB (dynamic, single file) disk</li>
+            <li>At least 2 GB RAM</li>
+            <li>At least 2 cores</li>
+        </ul>
+        <p>
+            Once you've booted into the Arch Live CD, proceed to Step 1.
         </p>
 
         <h5 data-magellan-destination="step1" id="step1" class="marker">A</h5>
         <hr>
         <h5>Step 1</h5>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            nec augue non mi auctor elementum. Vestibulum id orci ac
-            lectus auctor accumsan sed nec leo. Etiam volutpat fringilla
-            suscipit. Donec ipsum libero, euismod a pulvinar nec, placerat
-            id ligula. Suspendisse potenti. Fusce ac fermentum nulla. Morbi
-            lacus velit, fringilla vel facilisis a, posuere eu urna. Aenean vel
-            ullamcorper ipsum, ac sagittis tellus. Aliquam ligula neque, auctor
-            a placerat vitae, auctor non orci. Maecenas a turpis orci. Praesent
-            hendrerit adipiscing nisi, eleifend euismod mauris fermentum sit
-            amet. Vestibulum scelerisque tristique ornare. Vestibulum ante ipsum
-            primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-
-            Integer tellus massa, hendrerit sit amet nulla in, egestas facilisis
-            ipsum. Ut scelerisque ultricies ligula pretium hendrerit. Nulla
-            sed purus in urna dapibus pulvinar. Maecenas sit amet elementum
-            tellus. Etiam facilisis facilisis mauris. Nunc commodo, massa
-            sit amet dictum dictum, augue felis venenatis urna, nec elementum
-            mauris eros bibendum lectus. Interdum et malesuada fames ac ante
-            ipsum primis in faucibus. Nullam quis magna ligula. Vestibulum vel
-            urna a est dignissim eleifend venenatis sit amet felis. Sed eros
-            odio, tempus non scelerisque viverra, sollicitudin id nunc. Morbi
-            vestibulum metus sit amet nulla gravida porttitor. Nunc nec dolor
-            sit amet nisl lacinia luctus.
-
-            Vivamus mollis, lectus vitae volutpat consequat, dolor mi
-            aliquam quam, sed ornare nulla ipsum posuere mauris. Integer
-            aliquam luctus lacus, quis aliquet ipsum pulvinar vitae. Nullam
-            bibendum consequat convallis. Nam eu metus nibh. Sed hendrerit
-            quis augue quis vulputate. Praesent suscipit suscipit urna a
-            ultricies. Maecenas mollis ac lacus vitae pulvinar. Curabitur
-            ac placerat velit. Nullam a leo ipsum. Phasellus consectetur
-            condimentum orci, non adipiscing felis lacinia ac.
+            Now you're ready to install Arch Linux. Arch recently abandoned
+            its <code>ncurses</code> based installation (circa 2012);
+            installation is done entirely by a series of commands. The <a
+            href="https://wiki.archlinux.org/index.php/Beginners'_Guide">Beginner's
+            Guide</a> walks you through the entire process, so follow those
+            steps, but here are some suggestions/modifications:
         </p>
+        <ul>
+            <li>Since our networking hardware is fixed, DHCP is all
+                we need.</li>
+            <li>Make 3 partitions: one <code>ext4</code> partition,
+                one <code>swap</code> partition, and one <code>jfs</code>
+                partition. The <code>ext4</code> partition is where
+                you'll be doing most of the work, so make it large. The
+                <code>swap</code> partiion might need to be large,
+                depending on how much RAM you allocated your VM. 4 GB
+                should be enough. The <code>jfs</code> partition is for
+                later assignments; 1023 MB or more is suggested.</li>
+            <li>You should install the following package (groups):
+                <code>base, base-devel, multilib-devel, linux-lts,
+                linux-lts-headers</code>. The
+                <code>multilib-devel</code> group is from the <a
+                href="https://wiki.archlinux.org/index.php/Multilib">
+                multilib</a> repository; you will need to enable it as
+                it is disabled by default. When it asks you to confirm
+                the package selection, make sure to not install
+                <code>linux</code> from <code>base</code>. If you do, it's
+                not an issue; you can remove it later or not use it.</li>
+            <li>Don't worry about kernel modules yet, we'll deal with
+                those later.</li>
+        </ul>
+        <p>
+            We suggest making another user, so you don't always log in as
+            root. Additionally, you may want a graphical interface, but we'll
+            need to setup our video drivers first.
+        </p>
+        
+        <h5 data-magellan-destination="step2" id="step2" class="marker">A</h5>
+        <hr>
+        <h5>Step 2</h5>
     </div>
 
     <!-- Some more boilerplate tags -->
