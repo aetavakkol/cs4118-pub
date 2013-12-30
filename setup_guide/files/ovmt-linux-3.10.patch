@@ -1,0 +1,251 @@
+diff -aur open-vm-tools-2013.09.16-1328054/modules/linux/dkms.conf open-vm-tools-2013.09.16-1328054.new/modules/linux/dkms.conf
+--- open-vm-tools-2013.09.16-1328054/modules/linux/dkms.conf	2013-12-27 18:55:19.789989202 -0500
++++ open-vm-tools-2013.09.16-1328054.new/modules/linux/dkms.conf	2013-12-27 18:39:17.139989684 -0500
+@@ -1,39 +1,35 @@
+ PACKAGE_NAME=open-vm-tools
+ PACKAGE_VERSION=2013.09.16
+ MAKE_CMD_TMPL="make VM_UNAME=\$kernelver \
+-               MODULEBUILDDIR=$dkms_tree/$PACKAGE_NAME/$PACKAGE_VERSION/build"
++               MODULEBUILDDIR=$dkms_tree/$PACKAGE_NAME/$PACKAGE_VERSION/build \
++               CC_WARNINGS=-Wno-unused-local-typedefs"
+ 
+ # The vsock module depends on symbols exported by the vmci module, so it
+ # needs to be built afterwards; the MODULEBUILDDIR variable tells the makefiles
+ # where to store / retrive those symbol files.
+ MAKE[0]="$MAKE_CMD_TMPL -C vmblock;    \
+-         $MAKE_CMD_TMPL -C vmci;       \
+          $MAKE_CMD_TMPL -C vmhgfs;     \
+          $MAKE_CMD_TMPL -C vmsync;     \
+          $MAKE_CMD_TMPL -C vmxnet;     \
+          $MAKE_CMD_TMPL -C vsock"
+ CLEAN[0]="$MAKE_CMD_TMPL -C vmblock clean;    \
+-          $MAKE_CMD_TMPL -C vmci clean;       \
+           $MAKE_CMD_TMPL -C vmhgfs clean;     \
+-          $MAKE_CMD_TMPL -C vmsync clean; \
++          $MAKE_CMD_TMPL -C vmsync clean;    \
+           $MAKE_CMD_TMPL -C vmxnet clean;     \
+           $MAKE_CMD_TMPL -C vsock clean"
+ BUILT_MODULE_NAME[0]="vmblock"
+-BUILT_MODULE_NAME[1]="vmci"
+-BUILT_MODULE_NAME[2]="vmhgfs"
+-BUILT_MODULE_NAME[3]="vmsync"
+-BUILT_MODULE_NAME[4]="vmxnet"
+-BUILT_MODULE_NAME[5]="vsock"
++BUILT_MODULE_NAME[1]="vmhgfs"
++BUILT_MODULE_NAME[2]="vmsync"
++BUILT_MODULE_NAME[3]="vmxnet"
++BUILT_MODULE_NAME[4]="vsock"
+ BUILT_MODULE_LOCATION[0]="vmblock/"
+-BUILT_MODULE_LOCATION[1]="vmci/"
+-BUILT_MODULE_LOCATION[2]="vmhgfs/"
+-BUILT_MODULE_LOCATION[3]="vmsync/"
+-BUILT_MODULE_LOCATION[4]="vmxnet/"
+-BUILT_MODULE_LOCATION[5]="vsock/"
++BUILT_MODULE_LOCATION[1]="vmhgfs/"
++BUILT_MODULE_LOCATION[2]="vmsync/"
++BUILT_MODULE_LOCATION[3]="vmxnet/"
++BUILT_MODULE_LOCATION[4]="vsock/"
+ DEST_MODULE_LOCATION[0]="/kernel/fs/vmblock"
+-DEST_MODULE_LOCATION[1]="/kernel/drivers/misc"
+-DEST_MODULE_LOCATION[2]="/kernel/fs/vmhgfs"
+-DEST_MODULE_LOCATION[3]="/kernel/drivers/misc"
+-DEST_MODULE_LOCATION[4]="/kernel/drivers/net"
+-DEST_MODULE_LOCATION[5]="/kernel/net/vsock"
++DEST_MODULE_LOCATION[1]="/kernel/fs/vmhgfs"
++DEST_MODULE_LOCATION[2]="/kernel/drivers/misc"
++DEST_MODULE_LOCATION[3]="/kernel/drivers/net"
++DEST_MODULE_LOCATION[4]="/kernel/net/vsock"
+ AUTOINSTALL="YES"
+diff -aur open-vm-tools-2013.09.16-1328054/modules/linux/vmblock/linux/control.c open-vm-tools-2013.09.16-1328054.new/modules/linux/vmblock/linux/control.c
+--- open-vm-tools-2013.09.16-1328054/modules/linux/vmblock/linux/control.c	2013-09-23 01:57:48.000000000 -0400
++++ open-vm-tools-2013.09.16-1328054.new/modules/linux/vmblock/linux/control.c	2013-12-27 18:39:17.139989684 -0500
+@@ -208,9 +208,10 @@
+    VMBlockSetProcEntryOwner(controlProcMountpoint);
+ 
+    /* Create /proc/fs/vmblock/dev */
+-   controlProcEntry = create_proc_entry(VMBLOCK_CONTROL_DEVNAME,
+-                                        VMBLOCK_CONTROL_MODE,
+-                                        controlProcDirEntry);
++   controlProcEntry = proc_create(VMBLOCK_CONTROL_DEVNAME,
++                                  VMBLOCK_CONTROL_MODE,
++                                  controlProcDirEntry,
++                                  &ControlFileOps);
+    if (!controlProcEntry) {
+       Warning("SetupProcDevice: could not create " VMBLOCK_DEVICE "\n");
+       remove_proc_entry(VMBLOCK_CONTROL_MOUNTPOINT, controlProcDirEntry);
+@@ -218,7 +219,6 @@
+       return -EINVAL;
+    }
+ 
+-   controlProcEntry->proc_fops = &ControlFileOps;
+    return 0;
+ }
+ 
+@@ -278,7 +278,7 @@
+                int (*blockOp)(const char *filename,   // IN: block operation
+                               const os_blocker_id_t blocker))
+ {
+-   char *name;
++   struct filename *name;
+    int i;
+    int retval;
+ 
+@@ -287,13 +287,13 @@
+       return PTR_ERR(name);
+    }
+ 
+-   for (i = strlen(name) - 1; i >= 0 && name[i] == '/'; i--) {
+-      name[i] = '\0';
++   for (i = strlen(name->name) - 1; i >= 0 && name->name[i] == '/'; i--) {
++      ((char *)name->name)[i] = '\0';
+    }
+ 
+-   retval = i < 0 ? -EINVAL : blockOp(name, blocker);
++   retval = i < 0 ? -EINVAL : blockOp(name->name, blocker);
+ 
+-   putname(name);
++   __putname(name);
+ 
+    return retval;
+ }
+diff -aur open-vm-tools-2013.09.16-1328054/modules/linux/vmblock/linux/dentry.c open-vm-tools-2013.09.16-1328054.new/modules/linux/vmblock/linux/dentry.c
+--- open-vm-tools-2013.09.16-1328054/modules/linux/vmblock/linux/dentry.c	2013-09-23 01:57:48.000000000 -0400
++++ open-vm-tools-2013.09.16-1328054.new/modules/linux/vmblock/linux/dentry.c	2013-12-27 18:39:17.139989684 -0500
+@@ -31,8 +31,7 @@
+ #include "filesystem.h"
+ #include "block.h"
+ 
+-
+-static int DentryOpRevalidate(struct dentry *dentry, struct nameidata *nd);
++static int DentryOpRevalidate(struct dentry *dentry, unsigned int flags);
+ 
+ struct dentry_operations LinkDentryOps = {
+    .d_revalidate = DentryOpRevalidate,
+@@ -60,7 +59,7 @@
+ 
+ static int
+ DentryOpRevalidate(struct dentry *dentry,  // IN: dentry revalidating
+-                   struct nameidata *nd)   // IN: lookup flags & intent
++                   unsigned int flags)     // IN: lookup flags
+ {
+    VMBlockInodeInfo *iinfo;
+    struct nameidata actualNd;
+@@ -101,7 +100,7 @@
+    if (actualDentry &&
+        actualDentry->d_op &&
+        actualDentry->d_op->d_revalidate) {
+-      return actualDentry->d_op->d_revalidate(actualDentry, nd);
++      return actualDentry->d_op->d_revalidate(actualDentry, flags);
+    }
+ 
+    if (compat_path_lookup(iinfo->name, 0, &actualNd)) {
+diff -aur open-vm-tools-2013.09.16-1328054/modules/linux/vmblock/linux/inode.c open-vm-tools-2013.09.16-1328054.new/modules/linux/vmblock/linux/inode.c
+--- open-vm-tools-2013.09.16-1328054/modules/linux/vmblock/linux/inode.c	2013-09-23 01:57:48.000000000 -0400
++++ open-vm-tools-2013.09.16-1328054.new/modules/linux/vmblock/linux/inode.c	2013-12-27 18:39:17.139989684 -0500
+@@ -36,7 +36,7 @@
+ 
+ /* Inode operations */
+ static struct dentry *InodeOpLookup(struct inode *dir,
+-                                    struct dentry *dentry, struct nameidata *nd);
++                                    struct dentry *dentry, unsigned int flags);
+ static int InodeOpReadlink(struct dentry *dentry, char __user *buffer, int buflen);
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 13)
+ static void *InodeOpFollowlink(struct dentry *dentry, struct nameidata *nd);
+@@ -75,7 +75,7 @@
+ static struct dentry *
+ InodeOpLookup(struct inode *dir,      // IN: parent directory's inode
+               struct dentry *dentry,  // IN: dentry to lookup
+-              struct nameidata *nd)   // IN: lookup intent and information
++              unsigned int flags)     // IN: lookup flags
+ {
+    char *filename;
+    struct inode *inode;
+diff -aur open-vm-tools-2013.09.16-1328054/modules/linux/vmhgfs/file.c open-vm-tools-2013.09.16-1328054.new/modules/linux/vmhgfs/file.c
+--- open-vm-tools-2013.09.16-1328054/modules/linux/vmhgfs/file.c	2013-09-23 01:57:48.000000000 -0400
++++ open-vm-tools-2013.09.16-1328054.new/modules/linux/vmhgfs/file.c	2013-12-27 18:39:17.159989684 -0500
+@@ -25,6 +25,7 @@
+ /* Must come before any kernel header file. */
+ #include "driver-config.h"
+ 
++#include <linux/aio.h>
+ #include <linux/errno.h>
+ #include <linux/module.h>
+ #include <linux/signal.h>
+diff -aur open-vm-tools-2013.09.16-1328054/modules/linux/vmsync/sync.c open-vm-tools-2013.09.16-1328054.new/modules/linux/vmsync/sync.c
+--- open-vm-tools-2013.09.16-1328054/modules/linux/vmsync/sync.c	2013-09-23 01:57:48.000000000 -0400
++++ open-vm-tools-2013.09.16-1328054.new/modules/linux/vmsync/sync.c	2013-12-27 18:39:17.159989684 -0500
+@@ -162,7 +162,7 @@
+    cancel_delayed_work(&state->thawTask);
+    list_for_each_safe(cur, tmp, &state->devices) {
+       dev = list_entry(cur, VmSyncBlockDevice, list);
+-      if (dev->sb != NULL && dev->sb->s_frozen != SB_UNFROZEN) {
++      if (dev->sb != NULL && dev->sb->s_writers.frozen != SB_UNFROZEN) {
+          thaw_bdev(dev->bdev, dev->sb);
+          atomic_dec(&gFreezeCount);
+       }
+@@ -237,7 +237,7 @@
+     * the superblock is already frozen.
+     */
+    if (inode->i_sb->s_bdev == NULL ||
+-       inode->i_sb->s_frozen != SB_UNFROZEN) {
++       inode->i_sb->s_writers.frozen != SB_UNFROZEN) {
+       result = (inode->i_sb->s_bdev == NULL) ? -EINVAL : -EALREADY;
+       compat_path_release(&nd);
+       goto exit;
+@@ -303,7 +303,7 @@
+                     const char __user *userPaths)  // IN
+ {
+    int result = 0;
+-   char *paths;
++   struct filename *paths;
+    char *currPath;
+    char *nextSep;
+    struct list_head *cur, *tmp;
+@@ -328,7 +328,8 @@
+    /*
+     * First, try to add all paths to the list of paths to be frozen.
+     */
+-   currPath = paths;
++   currPath = __getname();
++   strcpy(currPath, paths->name);
+    do {
+       nextSep = strchr(currPath, ':');
+       if (nextSep != NULL) {
+@@ -347,6 +348,7 @@
+       }
+       currPath = nextSep + 1;
+    } while (nextSep != NULL);
++   __putname(currPath);
+ 
+    /*
+     * If adding all the requested paths worked, then freeze them.
+@@ -371,6 +373,8 @@
+    compat_mutex_unlock(&state->lock);
+    compat_mutex_unlock(&gFreezeLock);
+ 
++   __putname(paths);
++
+    if (result == 0) {
+       compat_schedule_delayed_work(&state->thawTask, VMSYNC_THAW_TASK_DELAY);
+    }
+@@ -670,9 +674,10 @@
+    }
+ 
+    /* Create /proc/driver/vmware-sync */
+-   controlProcEntry = create_proc_entry("driver/vmware-sync",
+-                                        S_IFREG | S_IRUSR | S_IRGRP | S_IROTH,
+-                                        NULL);
++   controlProcEntry = proc_create("driver/vmware-sync",
++                                  S_IFREG | S_IRUSR | S_IRGRP | S_IROTH,
++                                  NULL,
++                                  &VmSyncFileOps);
+    if (!controlProcEntry) {
+       printk(KERN_ERR "vmsync: could not create /proc/driver/vmware-sync\n");
+       kmem_cache_destroy(gSyncStateCache);
+@@ -680,7 +685,6 @@
+       return -EINVAL;
+    }
+ 
+-   controlProcEntry->proc_fops = &VmSyncFileOps;
+    return 0;
+ }

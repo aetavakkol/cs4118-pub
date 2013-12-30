@@ -37,6 +37,7 @@
             font-size: 90%;
         }
         ul {
+            font-family: 'Noto Sans', sans-serif;
             padding-left: 10px;
         }
         /* This div contains the entire page and applies an easthetically
@@ -106,7 +107,7 @@
 
         <h5 data-magellan-destination="step0" id="step0" class="marker">A</h5>
         <hr>
-        <h5>Step 0</h5>
+        <h5>Step 0: Setting up a Virtual Machine</h5>
         <p>
             First, you should download and install <a
             href="http://www.vmware.com/products/ws/">VMware
@@ -138,7 +139,7 @@
 
         <h5 data-magellan-destination="step1" id="step1" class="marker">A</h5>
         <hr>
-        <h5>Step 1</h5>
+        <h5>Step 1: Installing Arch Linux</h5>
         <p>
             Now you're ready to install Arch Linux. Arch recently abandoned
             its <code>ncurses</code> based installation (circa 2012);
@@ -173,13 +174,34 @@
         </ul>
         <p>
             We suggest making another user, so you don't always log in as
-            root. Additionally, you may want a graphical interface, but we'll
-            need to setup our video drivers first.
+            root. Additionally, you may want a graphical interface; however,
+            you might want to setup guest additions first (the next step).
         </p>
-        
+
         <h5 data-magellan-destination="step2" id="step2" class="marker">A</h5>
         <hr>
-        <h5>Step 2</h5>
+        <h5>Step 2: Compiling Open-VM-Tools</h5>
+
+        <p>
+            You should get acquanted with <code>pacman</code>, Arch's package
+            management system before proceeding.
+        </p>
+        <p>
+            As you'll learn later, operating systems and virtual machine
+            managers (VMMs) provide many interfaces to communicate with each
+            other. VMware has integrated most of its modules with the linux
+            kernel tree, but for (incredibly useful) features like automatic
+            screen resizing and shared clipboard, you will need to install additional modules. These modules are contained in the VMware Tools software, which VMware includes with VMware Workstation/Fusion; but Arch Linux requires newer versions of these tools, and includes them in its <code>community</code> repository as the package <code>open-vm-tools</code>. As they exist, VMware Tools and Open-VM-Tools will not install in the <code>linux-lts</code> kernel, so we'll take the more recent <code>Open-VM-Tools</code> and modify it to build for our kernel.
+        </p>
+        <p>
+            The <a href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch Build System</a> provides users access to the source code of most packages and allows them to make any desired modifications to the packages before rebuilding and installing them. We need to modify <code>open-vm-tools</code> because it uses depracated kernel functions. Thankfully, there already exists a <a href="https://gist.github.com/kikairoya/6218671">patch</a> for open-vm-tools, but it's in <code>diff --git</code> form, which <code>patch</code> doesn't quite understand (in particular, file deletes, moves, or renamings). However, we've modified the patch to work with the 2013.09.16 build of <code>open-vm-tools</code>, so here's how to install it (the following is mostly a reiteration of the steps of <a href="https://wiki.archlinux.org/index.php/Patching_in_ABS">this</a> article):
+        </p>
+        <ul>
+            <li>First, install <code>abs</code> and get the <code>community/open-vm-tools</code> build files by following the instructions in the <a href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch Build System</a> article.</li>
+            <li>Then, get the source for <code>open-vm-tools</code> by using <code>makepkg -o</code> in the build directory.</li>
+            <li>Grab the <a href="files/ovmt-linux-3.10.patch">patch</a> and <a href="files/cleanup.sh">cleanup script</a> and put them in the same directory as <code>PKGBUILD</code>.</li>
+        </ul>
+        
     </div>
 
     <!-- Some more boilerplate tags -->
