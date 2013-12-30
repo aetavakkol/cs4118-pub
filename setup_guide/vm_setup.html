@@ -33,6 +33,9 @@
         p {
             font-family: 'Noto Sans', sans-serif;
         }
+        i {
+            font-size: 90%;
+        }
         /* This div contains the entire page and applies an easthetically
            pleasing offset to the text inside */
         #container {
@@ -76,6 +79,7 @@
         <h5 data-magellan-destination="preface" id="preface"
             class="marker">A</h5>
         <!-- Whatever you want in this section here -->
+        <hr>
         <h5>Preface</h5>
         <p>
             <a href="http://www.archlinux.org/">Arch Linux</a> is a distribution
@@ -83,20 +87,51 @@
             control. However, this means that users themselves must put in an
             effort to shape their Arch installation as they see fit. Thankfully,
             <a href="http://wiki.archlinux.org/index.php/Main_Page">Arch
-            Linux</a> has a massive community surrounding it and guides
-            to help walk you through even more obscure features of the
+            Linux</a> has a large community supporting it and tons of guides
+            to help walk you through even the obscure features of the
             distribution. This guide will point you to Arch guides detailing
             how to setup your system and detail any modifications necessary
             to get it to work on VMware Workstation.
         </p>
+        <p>
+            <i>We recommend you use a virtual machine manager for this class,
+            instead of developing directly on your machine. If you use your
+            own machine, you may risk data loss/corruption in some assignments
+            of this course.</i>
+        </p>
 
         <h5 data-magellan-destination="step0" id="step0" class="marker">A</h5>
+        <hr>
         <h5>Step 0</h5>
         <p>
-            
+            First, you should download and install <a
+            href="http://www.vmware.com/products/ws/">VMware
+            Workstation</a> for Windows or Linux, or <a
+            href="http://www.vmware.com/products/fusion/">VMware Fusion</a> for
+            Mac. A <a href="http://www.cs.columbia.edu/~crf/accounts/">CS
+            account</a> will provide access to <a
+            href="http://www1.cs.columbia.edu/crf/software/vmware">VMware
+            licenses</a> and software at no additional cost. Guides for
+            installing VMware products on your platform are just a Google
+            search away.
+        </p>
+        <p>
+            Then, grab the <a href="https://www.archlinux.org/download/">Arch
+            Linux ISO</a>. To begin the installation process, start VMware
+            Workstation/Fusion and make a new virtual machine (File -> New
+            Virtual Machine). The new window will walk you through configuring
+            the virutal hardware and selecting the ISO. For the hardware,
+            we suggest:
+            <ul>
+                <li>64 GB (dynamic, single file) disk</li>
+                <li>At least 2 GB RAM</li>
+                <li>At least 2 cores</li>
+            </ul>
+            Once you're booted into the Arch Live CD, proceed to Step 1.
         </p>
 
         <h5 data-magellan-destination="step1" id="step1" class="marker">A</h5>
+        <hr>
         <h5>Step 1</h5>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
