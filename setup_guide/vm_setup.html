@@ -21,6 +21,7 @@
            magellan move to the proper position */
         .marker {
             visibility: hidden;
+            font-size: 10%;
         }
         #title {
             position: relative;
@@ -63,6 +64,7 @@
             <dd data-magellan-arrival="step0"><a href="#step0">Step 0</a></dd>
             <dd data-magellan-arrival="step1"><a href="#step1">Step 1</a></dd>
             <dd data-magellan-arrival="step2"><a href="#step2">Step 2</a></dd>
+            <dd data-magellan-arrival="step3"><a href="#step3">Step 3</a></dd>
         </dl>
     </div>
 
@@ -191,17 +193,73 @@
             managers (VMMs) provide many interfaces to communicate with each
             other. VMware has integrated most of its modules with the linux
             kernel tree, but for (incredibly useful) features like automatic
-            screen resizing and shared clipboard, you will need to install additional modules. These modules are contained in the VMware Tools software, which VMware includes with VMware Workstation/Fusion; but Arch Linux requires newer versions of these tools, and includes them in its <code>community</code> repository as the package <code>open-vm-tools</code>. As they exist, VMware Tools and Open-VM-Tools will not install in the <code>linux-lts</code> kernel, so we'll take the more recent <code>Open-VM-Tools</code> and modify it to build for our kernel.
+            screen resizing and shared clipboard, you will need to install
+            additional modules. These modules are contained in the VMware Tools
+            software, which VMware includes with VMware Workstation/Fusion;
+            but Arch Linux requires newer versions of these tools, and
+            includes them in its <code>community</code> repository as the
+            package <code>open-vm-tools</code>. As they exist, VMware Tools
+            and Open-VM-Tools will not install in the <code>linux-lts</code>
+            kernel, so we'll take the more recent <code>Open-VM-Tools</code>
+            and modify it to build for our kernel.
         </p>
         <p>
-            The <a href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch Build System</a> provides users access to the source code of most packages and allows them to make any desired modifications to the packages before rebuilding and installing them. We need to modify <code>open-vm-tools</code> because it uses depracated kernel functions. Thankfully, there already exists a <a href="https://gist.github.com/kikairoya/6218671">patch</a> for open-vm-tools, but it's in <code>diff --git</code> form, which <code>patch</code> doesn't quite understand (in particular, file deletes, moves, or renamings). However, we've modified the patch to work with the 2013.09.16 build of <code>open-vm-tools</code>, so here's how to install it (the following is mostly a reiteration of the steps of <a href="https://wiki.archlinux.org/index.php/Patching_in_ABS">this</a> article):
+            The <a
+            href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch
+            Build System</a> provides users access to the source code of most
+            packages and allows them to make any desired modifications to
+            the packages before rebuilding and installing them. We need to
+            modify <code>open-vm-tools</code> because it uses depracated
+            kernel functions. Thankfully, there already exists a <a
+            href="https://gist.github.com/kikairoya/6218671">patch</a>
+            for open-vm-tools, but it's in <code>diff --git</code>
+            form, which <code>patch</code> doesn't quite understand
+            (in particular, file deletes, moves, or renamings). However,
+            we've modified the patch to work with the 2013.09.16 build
+            of <code>open-vm-tools</code>, so here's how to install it
+            (the following is mostly a reiteration of the steps of <a
+            href="https://wiki.archlinux.org/index.php/Patching_in_ABS">this</a>
+            article):
         </p>
         <ul>
-            <li>First, install <code>abs</code> and get the <code>community/open-vm-tools</code> build files by following the instructions in the <a href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch Build System</a> article.</li>
-            <li>Then, get the source for <code>open-vm-tools</code> by using <code>makepkg -o</code> in the build directory.</li>
-            <li>Grab the <a href="files/ovmt-linux-3.10.patch">patch</a> and <a href="files/cleanup.sh">cleanup script</a> and put them in the same directory as <code>PKGBUILD</code>.</li>
+            <li>First, install <code>abs</code> and
+                get the <code>community/open-vm-tools</code>
+                build files by following the instructions in the <a
+                href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch
+                Build System</a> article.</li>
+            <li>Then, get the source for <code>open-vm-tools</code> by using
+                <code>makepkg -o</code> in the build directory.</li>
+            <li>Grab the <a href="files/ovmt-linux-3.10.patch">patch</a>
+                and <a href="files/cleanup.sh">cleanup script</a> and put them
+                in the same directory as <code>PKGBUILD</code>.</li>
+            <li>Add the patch and cleanup script to the
+                <code>PKGBUILD</code>. Follow the instructions <a
+                href="https://wiki.archlinux.org/index.php/Patching_in_ABS">here</a>,
+                under the "Applying patches" section, for how to add them.</li>
+            <li>Finally, follow the "Build Package" section of the <a
+                href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch
+                Build System</a> article to install the package.</li>
         </ul>
+        <p>
+            Now that we have <code>open-vm-tools</code>
+            installed, follow the instructions in the <a
+            href="https://wiki.archlinux.org/index.php/Installing_Arch_Linux_in_VMware">Installing
+            Arch Linux in VMware</a> article to install
+            <code>open-vm-tools</code>. Whenever you build a new kernel, you
+            will need to run <code>dkms install</code>, but in most cases,
+            you will not need to if you are just rebuilding a kernel. The
+            article also shows you how to setup time synchronization, Xorg
+            configuration (for a graphical interface), shared clipboard support,
+            shared folders support, and more.
+        </p>
         
+        <h5 data-magellan-destination="step3" id="step3" class="marker">A</h5>
+        <hr>
+        <h5>Step 3: Make it Your Own</h5>
+        
+        <p>
+            There's no more necessary setup to do. Feel free to install/customize any packages you want. The Beginner's Guide links to some <a href="https://wiki.archlinux.org/index.php/General_Recommendations">General Recommendations</a> and a <a href="https://wiki.archlinux.org/index.php/List_of_Applications">List of Applications</a> at the end; those may be of interest to you. You can keep your Arch install small and lean, or turn it into a multimedia powerhouse.
+        </p>
     </div>
 
     <!-- Some more boilerplate tags -->
@@ -216,7 +274,7 @@
         /* a tags enclosed in some other tag of class smooth will be scrolled
            using a smooth effect the scroll will end 6 units (not exactly
            pixels, it seems) above their destination. */
-        $('.smooth a').smoothScroll({offset:-6});
+        $('.smooth a').smoothScroll({offset:-25});
     </script>
 </body>
 </html>
