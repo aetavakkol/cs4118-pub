@@ -61,17 +61,17 @@
                  -->
             <dd data-magellan-arrival="preface" class="active"><a
             href="#preface">Preface</a></dd>
-            <dd data-magellan-arrival="step0"><a href="#step0">Step 0</a></dd>
             <dd data-magellan-arrival="step1"><a href="#step1">Step 1</a></dd>
             <dd data-magellan-arrival="step2"><a href="#step2">Step 2</a></dd>
             <dd data-magellan-arrival="step3"><a href="#step3">Step 3</a></dd>
+            <dd data-magellan-arrival="step4"><a href="#step4">Step 4</a></dd>
         </dl>
     </div>
 
     <!-- The page content (surrounded by a div just for the padding) -->
     <div id="container">
         <h3 id="title">Setting up an Arch Linux (x64) Virtual Machine in
-            VMware</h3>
+            VirtualBox</h3>
 
         <br />
 
@@ -98,7 +98,7 @@
             to help walk you through even the obscure features of the
             distribution. This guide will point you to Arch guides detailing
             how to setup your system and detail any modifications necessary
-            to get it to work on VMware Workstation.
+            to get it to work on VirtualBox.
         </p>
         <p>
             <i>We recommend you use a virtual machine manager for this class,
@@ -107,72 +107,68 @@
             of this course.</i>
         </p>
 
-        <h5 data-magellan-destination="step0" id="step0" class="marker">A</h5>
+        <h5 data-magellan-destination="step1" id="step1" class="marker">A</h5>
         <hr>
-        <h5>Step 0: Setting up a Virtual Machine</h5>
+        <h5>Step 1: Setting up a Virtual Machine</h5>
         <p>
             First, you should download and install <a
-            href="http://www.vmware.com/products/ws/">VMware
-            Workstation</a> for Windows or Linux, or <a
-            href="http://www.vmware.com/products/fusion/">VMware Fusion</a> for
-            Mac. A <a href="http://www.cs.columbia.edu/~crf/accounts/">CS
-            account</a> will provide access to <a
-            href="http://www1.cs.columbia.edu/crf/software/vmware">VMware
-            licenses</a> and software at no additional cost. Guides for
-            installing VMware products on your platform are just a Google
-            search away.
+            href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a>. 
+			If you use Linux, your distribution likely already has 
+			packages in its repositories for VirtualBox. You can refer to 
+			the <a href="https://www.virtualbox.org/manual/UserManual.html
+			">User Manual</a> on the download page for instructions on 
+			installing VirtualBox, though the process is similar to any 
+			other software.
         </p>
         <p>
             Then, grab the <a href="https://www.archlinux.org/download/">Arch
-            Linux ISO</a>. To begin the installation process, start VMware
-            Workstation/Fusion and make a new virtual machine (File -> New
-            Virtual Machine). The new window will walk you through configuring
-            the virutal hardware and selecting the ISO. For the hardware,
-            we suggest:
+            Linux ISO</a>. To begin the installation process, start VirtualBox 
+			and create a new virtual machine. If you haven't already created 
+			one, it will prompt you with the configuration wizard. Otherwise, 
+			just click the "New" button in the top bar. The new window will 
+			walk you through configuring the virutal hardware and selecting 
+			the ISO. For the hardware, we suggest:
         </p>
         <ul>
-            <li>64 GB (dynamic, single file) disk</li>
-            <li>At least 2 GB RAM</li>
+            <li>20 GB (dynamic, single file) minimum, 50 GB or more is 
+				recommended (Please note that this is the maximum size the 
+				virtual disk will grow to; you do not need to have this much 
+				free space immediately available)</li>
+            <li>1 GB minimum, 2 GB recommend (or more, if you have 8 GB or 
+				more of physical RAM)</li>
             <li>At least 2 cores</li>
         </ul>
         <p>
-            Once you've booted into the Arch Live CD, proceed to Step 1.
+            Once you've booted into the Arch Live CD, proceed to Step 2.
         </p>
 
-        <h5 data-magellan-destination="step1" id="step1" class="marker">A</h5>
+        <h5 data-magellan-destination="step2" id="step2" class="marker">A</h5>
         <hr>
-        <h5>Step 1: Installing Arch Linux</h5>
+        <h5>Step 2: Installing Arch Linux</h5>
         <p>
             Now you're ready to install Arch Linux. Arch recently abandoned
             its <code>ncurses</code> based installation (circa 2012);
             installation is done entirely by a series of commands. The <a
-            href="https://wiki.archlinux.org/index.php/Beginners'_Guide">Beginner's
-            Guide</a> walks you through the entire process, so follow those
-            steps, but here are some suggestions/modifications:
+            href="https://wiki.archlinux.org/index.php/Beginners'_Guide">
+			Beginner's Guide</a> walks you through the entire process, so 
+			follow those steps, but here are some suggestions/modifications:
         </p>
         <ul>
             <li>Since our networking hardware is fixed, DHCP is all
                 we need.</li>
-            <li>Make 3 partitions: one <code>ext4</code> partition,
-                one <code>swap</code> partition, and one <code>jfs</code>
-                partition. The <code>ext4</code> partition is where
-                you'll be doing most of the work, so make it large. The
-                <code>swap</code> partiion might need to be large,
-                depending on how much RAM you allocated your VM. 4 GB
-                should be enough. The <code>jfs</code> partition is for
-                later assignments; 1023 MB or more is suggested.</li>
-            <li>You should install the following package (groups):
-                <code>base, base-devel, multilib-devel, linux-lts,
-                linux-lts-headers</code>. The
-                <code>multilib-devel</code> group is from the <a
-                href="https://wiki.archlinux.org/index.php/Multilib">
-                multilib</a> repository; you will need to enable it as
-                it is disabled by default. When it asks you to confirm
-                the package selection, make sure to not install
-                <code>linux</code> from <code>base</code>. If you do, it's
-                not an issue; you can remove it later or not use it.</li>
-            <li>Don't worry about kernel modules yet, we'll deal with
-                those later.</li>
+            <li>Make 2 partitions: one <code>ext4</code> partition and
+                one <code>swap</code> partition. The <code>ext4</code> 
+				partition is where you'll be doing most of the work, so 
+				make it large. The <code>swap</code> partiion might need 
+				to be large, depending on how much RAM you allocated your 
+				VM. 4 GB should be enough. The swap partition, as the 
+				name implies, is used to swap memory pages between RAM 
+				and disk, usually just when physical memory is running low.
+            <li>You should install the following package (groups): <code>
+				base, base-devel, linux-lts, linux-lts-headers</code>. 
+				Although we will be using the LTS kernel, the <code>linux
+				</code> package is necessary, as the VirtualBox modules we 
+				will be installing later depend on it.</li>
         </ul>
         <p>
             We suggest making another user, so you don't always log in as
@@ -180,85 +176,70 @@
             you might want to setup guest additions first (the next step).
         </p>
 
-        <h5 data-magellan-destination="step2" id="step2" class="marker">A</h5>
+        <h5 data-magellan-destination="step3" id="step3" class="marker">A</h5>
         <hr>
-        <h5>Step 2: Compiling Open-VM-Tools</h5>
+        <h5>Step 3: Installing VirtualBox Guest Additions</h5>
 
         <p>
-            You should get acquanted with <code>pacman</code>, Arch's package
+            You should get acquainted with <code>pacman</code>, Arch's package
             management system before proceeding.
         </p>
         <p>
-            As you'll learn later, operating systems and virtual machine
-            managers (VMMs) provide many interfaces to communicate with each
-            other. VMware has integrated most of its modules with the linux
-            kernel tree, but for (incredibly useful) features like automatic
-            screen resizing and shared clipboard, you will need to install
-            additional modules. These modules are contained in the VMware Tools
-            software, which VMware includes with VMware Workstation/Fusion;
-            but Arch Linux requires newer versions of these tools, and
-            includes them in its <code>community</code> repository as the
-            package <code>open-vm-tools</code>. As they exist, VMware Tools
-            and Open-VM-Tools will not install in the <code>linux-lts</code>
-            kernel, so we'll take the more recent <code>Open-VM-Tools</code>
-            and modify it to build for our kernel.
+            While ArchLinux is fully functional, you might want to install 
+			the <a href="https://www.virtualbox.org/manual/ch04.html">
+			VirtualBox Guest Additions</a> for (incredibly useful) 
+			features like automatic screen resizing, shared clipboard, 
+			seamless guest mode, and more. You should not install the 
+			VirtualBox Guest Additions using the CD that comes with 
+			VirtualBox, as the installation will fail. Rather, you should 
+			follow the instructions on the Arch Wiki <a href="
+			https://wiki.archlinux.org/index.php/VirtualBox#Installation_st
+			eps_for_Arch_Linux_guests">VirtualBox</a> page. Since we'll 
+			be compiling our own kernels, you should follow the custom 
+			kernel instructions. For clarity, the first two steps are 
+			given below:
         </p>
-        <p>
-            The <a
-            href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch
-            Build System</a> provides users access to the source code of most
-            packages and allows them to make any desired modifications to
-            the packages before rebuilding and installing them. We need to
-            modify <code>open-vm-tools</code> because it uses depracated
-            kernel functions. Thankfully, there already exists a <a
-            href="https://gist.github.com/kikairoya/6218671">patch</a>
-            for open-vm-tools, but it's in <code>diff --git</code>
-            form, which <code>patch</code> doesn't quite understand
-            (in particular, file deletes, moves, or renamings). However,
-            we've modified the patch to work with the 2013.09.16 build
-            of <code>open-vm-tools</code>, so here's how to install it
-            (the following is mostly a reiteration of the steps of <a
-            href="https://wiki.archlinux.org/index.php/Patching_in_ABS">this</a>
-            article):
-        </p>
-        <ul>
-            <li>First, install <code>abs</code> and
-                get the <code>community/open-vm-tools</code>
-                build files by following the instructions in the <a
-                href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch
-                Build System</a> article.</li>
-            <li>Then, get the source for <code>open-vm-tools</code> by using
-                <code>makepkg -o</code> in the build directory.</li>
-            <li>Grab the <a href="files/ovmt-linux-3.10.patch">patch</a>
-                and <a href="files/cleanup.sh">cleanup script</a> and put them
-                in the same directory as <code>PKGBUILD</code>.</li>
-            <li>Add the patch and cleanup script to the
-                <code>PKGBUILD</code>. Follow the instructions <a
-                href="https://wiki.archlinux.org/index.php/Patching_in_ABS">here</a>,
-                under the "Applying patches" section, for how to add them.</li>
-            <li>Finally, follow the "Build Package" section of the <a
-                href="https://wiki.archlinux.org/index.php/Arch_Build_System">Arch
-                Build System</a> article to install the package.</li>
-        </ul>
-        <p>
-            Now that we have <code>open-vm-tools</code>
-            installed, follow the instructions in the <a
-            href="https://wiki.archlinux.org/index.php/Installing_Arch_Linux_in_VMware">Installing
-            Arch Linux in VMware</a> article to install
-            <code>open-vm-tools</code>. Whenever you build a new kernel, you
-            will need to run <code>dkms install</code>, but in most cases,
-            you will not need to if you are just rebuilding a kernel. The
-            article also shows you how to setup time synchronization, Xorg
-            configuration (for a graphical interface), shared clipboard support,
-            shared folders support, and more.
-        </p>
+		<ul>
+			<li>Install <code>virtualbox-guest-utils, 
+				virtualbox-guest-modules, virtualbox-guest-dkms</code> and 
+				<code>vboxguest-hook</code>. <code>vboxguest-hook</code> is 
+				from the <a href="
+				https://wiki.archlinux.org/index.php/Arch_User_Repository#Insta
+				lling_packages">Arch User Repository</a>, so follow that 
+				guide for installing it (<code>yaourt</code> is recommended 
+				for simplicity). <code>vboxguest-hook</code> enables 
+				automatic compilation of VirtualBox modules at kernel image 
+				generation and boot time.</li>
+			<li>Run <code>dkms install</code> to install the kernel modules. 
+				You can figure out the kernel version by <code>uname -r</code>
+				, or looking at the names of the directories under <code>
+				/usr/src</code> if you haven't reboot into the Arch install 
+				yet. You can get the <code>vboxguest</code> version directly 
+				from <code> ls /var/lib/dkms/vboxguest</code> (the name of 
+				the folder is the same as the version number).</li>
+		</ul>
+		<p>
+			Follow the rest of the guide to learn how to enable automatically 
+			loading and updating of the modules, add <code>vboxguest</code> to 
+			the <code> HOOKS</code> array, and launch the guest services. The 
+			guide also has instructions for many other features you may be 
+			interested in.
+		</p>
         
-        <h5 data-magellan-destination="step3" id="step3" class="marker">A</h5>
+        <h5 data-magellan-destination="step4" id="step4" class="marker">A</h5>
         <hr>
-        <h5>Step 3: Make it Your Own</h5>
+        <h5>Step 4: Make it Your Own</h5>
         
         <p>
-            There's no more necessary setup to do. Feel free to install/customize any packages you want. The Beginner's Guide links to some <a href="https://wiki.archlinux.org/index.php/General_Recommendations">General Recommendations</a> and a <a href="https://wiki.archlinux.org/index.php/List_of_Applications">List of Applications</a> at the end; those may be of interest to you. You can keep your Arch install small and lean, or turn it into a multimedia powerhouse.
+            There's no more necessary setup to do. Feel free to 
+			install/customize any packages you want. The Beginner's Guide 
+			links to some <a href="
+			https://wiki.archlinux.org/index.php/General_Recommendations">
+			General Recommendations</a> and a <a href="
+			https://wiki.archlinux.org/index.php/List_of_Applications">
+			List of Applications</a> at the end; those may be of interest 
+			to you. You can keep your Arch install small and lean, or 
+			turn it into a multimedia powerhouse.
         </p>
     </div>
 
@@ -274,7 +255,7 @@
         /* a tags enclosed in some other tag of class smooth will be scrolled
            using a smooth effect the scroll will end 6 units (not exactly
            pixels, it seems) above their destination. */
-        $('.smooth a').smoothScroll({offset:-25});
+        $('.smooth a').smoothScroll({offset:-18});
     </script>
 </body>
 </html>
