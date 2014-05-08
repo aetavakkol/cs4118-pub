@@ -59,3 +59,4 @@ mkdir subdir/heyDude/heyGirl
 ```
 
 - The above output shows that all commands executed successfully. Not all commands produce output, but those that fail will output something indicating that they failed (unless the VM crashes, of course).
+- The scripts make the submission, insert the module, mount a directory, unmount the directory, and remove the module. So all you have to do is `git checkout` to the appropriate commit and run the script (assuming that their module executes just fine).

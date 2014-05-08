@@ -66,6 +66,7 @@ set -e
 insmod "$makeDir/lwnfs.ko"
 # Mount it
 mount -t lwnfs none "$mntDir"
+printBanner "echo mounted!"
 cd "$mntDir"
 # Get the output
 lsOutput=$(ls -alF)
