@@ -17,6 +17,19 @@ printBanner() {
 	echo "$banner" >> "$resultFile"
 }
 
+verifyCount() {
+    lsOutput=$(ls -alF "$1")
+    IFS=$'\n' lsArr=($lsOutput)
+    pos="$2"
+    line=$(echo "${lsArr[pos]}" | sed -e 's/ /\t/g')
+    linkCount=$(echo "$line" | cut -f2)
+    if [[ ! "$linkCount" == "$3" ]]; then
+        echo "$banner" >> "$resultFile"
+        echo "$1 has linkCount of $linkCount, instead of $3" >> "$resultFile"
+        echo "$banner" >> "$resultFile"
+    fi
+}
+
 while getopts ":m:d:" o; do
     case "${o}" in
         m)
@@ -47,7 +60,7 @@ rm -rf "$mntDir"
 set +e
 mkdir "$mntDir"
 
-resultFile="$PWD/part1-results.txt"
+resultFile="$PWD/part4-results.txt"
 rm -rf "$resultFile"
 # Make the module
 initDir="$PWD"
@@ -66,30 +79,30 @@ insmod "$makeDir/lwnfs.ko"
 # Mount it
 mount -t lwnfs none "$mntDir"
 cd "$mntDir"
-printBanner "ls -alF"
-printBanner "ls -alF subdir"
-# Execute the session
-commandOutput=("0" "1" "2" "" "1000000" "1000001" "1000002" "" "2000" "2001"
-	"2002")
-command=("cat counter" "cat counter" "cat counter" "echo 1000000 > counter"
-	"cat counter" "cat counter" "cat counter" "echo 2000 > subdir/subcounter"
-	"cat subdir/subcounter" "cat subdir/subcounter" "cat subdir/subcounter")
+# Make a directory
+mkdir heyBro
+# Verify the count
+verifyCount ./ 1 4
+# Make another one
+mkdir heyDog
+# Verify the count again
+verifyCount ./ 1 5
 
-length=${#commandOutput[@]}
-index=0
-while [[ $index -lt $length ]]; do
-    actualOutput=$(eval "${command[index]}")
-    if [[ ! "$actualOutput" == "${commandOutput[index]}" ]]; then
-        echo "$banner" >> "$resultFile"
-        echo "${command[index]} mismatch:" >> "$resultFile"
-        echo "$actualOutput" >> "$resultFile"
-        echo "$banner" >> "$resultFile"
-    fi
-    index=$((index + 1))
-done
+# Make a subdir
+mkdir subdir/heyBrah
+verifyCount subdir 1 3
+# Make another subdir
+mkdir subdir/heyDude
+verifyCount subdir 1 4
+
+# One final directory
+mkdir subdir/heyDude/heyGirl
+verifyCount subdir/heyDude 1 3
+
+# Make sure the original count is still correct
+verifyCount ./ 1 5
 
 cd "$initDir"
 umount "$mntDir"
-printBanner "ls -alF $mntDir"
 rmmod lwnfs
 set +e
