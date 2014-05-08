@@ -52,6 +52,7 @@ fi
 
 # Get the mount directory
 mntDir="${d:-mnt}"
+mntDir="$PWD/$mntDir"
 
 # Delete the mntDir
 umount "$mntDir" >/dev/null 2>&1
