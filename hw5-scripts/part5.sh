@@ -11,10 +11,21 @@ usage() { echo "Usage: $0 [-d <mount-directory>] [-m <module-directory>]" 1>&2; 
 banner="################################################################################"
 banner2="----------------------------------------"
 printBanner() {
-	echo "$banner" >> "$resultFile"
-	echo -e "$1\n$banner2" >> "$resultFile"
-	eval "$1" >> "$resultFile" 2>&1
-	echo "$banner" >> "$resultFile"
+    echo "$banner" >> "$resultFile"
+    echo -e "$1\n$banner2" >> "$resultFile"
+    eval "$1" >> "$resultFile" 2>&1
+    echo "$banner" >> "$resultFile"
+}
+
+printAndVerify() {
+    echo "$banner" >> "$resultFile"
+    echo -e "$1\n$banner2" >> "$resultFile"
+    eval "$1" >> "$resultFile" 2>&1
+    count=$(cat "$2")
+    if [[ ! "$count" == "$3" ]]; then
+        echo "Counter value of $count, instead of $3" >> "$resultFile"
+    fi
+    echo "$banner" >> "$resultFile"
 }
 
 verifyCount() {
@@ -39,7 +50,7 @@ while getopts ":m:d:" o; do
             d=${OPTARG}
             ;;
         *)
-			echo "Invalid option: -${OPTARG}" >&2
+            echo "Invalid option: -${OPTARG}" >&2
             usage
             ;;
     esac
@@ -47,7 +58,7 @@ done
 shift $((OPTIND-1))
 
 if [[ ! -z "$1" ]]; then
-	usage
+    usage
 fi
 
 # Get the mount directory
@@ -60,7 +71,7 @@ rm -rf "$mntDir"
 set +e
 mkdir "$mntDir"
 
-resultFile="$PWD/part4-results.txt"
+resultFile="$PWD/part5-results.txt"
 rm -rf "$resultFile"
 # Make the module
 initDir="$PWD"
@@ -81,26 +92,21 @@ mount -t lwnfs none "$mntDir"
 cd "$mntDir"
 # Make a directory
 printBanner "mkdir heyBro"
-# Verify the count
-verifyCount ./ 1 4
-# Make another one
-printBanner "mkdir heyDog"
-# Verify the count again
-verifyCount ./ 1 5
+# Make a counter
+printBanner "touch myCounter"
+# Verify the link count
+verifyCount ./myCounter 0 1
+# Verify counter functionality
+printAndVerify "echo 1000 > myCounter" myCounter 1000
+# Make another counter
+printAndVerify "echo 1000 > anotherCounter" anotherCounter 1000
 
-# Make a subdir
-printBanner "mkdir subdir/heyBrah"
-verifyCount subdir 1 3
-# Make another subdir
-printBanner "mkdir subdir/heyDude"
-verifyCount subdir 1 4
-
-# One final directory
-printBanner "mkdir subdir/heyDude/heyGirl"
-verifyCount subdir/heyDude 1 3
-
-# Make sure the original count is still correct
-verifyCount ./ 1 5
+# Touch a counter
+printAndVerify "touch heyBro/aCounter" heyBro/aCounter 0
+# Verify it again
+printAndVerify "touch heyBro/aCounter" heyBro/aCounter 1
+# Verify the link count
+verifyCount heyBro/aCounter 0 1
 
 cd "$initDir"
 umount "$mntDir"
