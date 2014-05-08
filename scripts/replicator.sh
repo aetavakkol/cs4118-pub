@@ -1,6 +1,9 @@
 #!/bin/sh
 # Given a single argument copies it over to /tmp using the name resolved by pwd.
 
+# Include hidden files in directory expansion
+shopt -s dotglob
+
 # If there are no arguments, quit
 if [ -z "$1" ]; then
     echo "usage: $0 dir"
