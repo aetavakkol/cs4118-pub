@@ -35,7 +35,7 @@ for dir in ./*; do
 	fi
 done
 
-extractFile="$initDir/extractResults.txt"
+extractFile="$initDir/extract-results.txt"
 rm -rf "$extractFile"
 touch "$extractFile"
 
