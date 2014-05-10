@@ -65,7 +65,7 @@ rmmod lwnfs >/dev/null 2>&1
 set -e
 insmod "$makeDir/lwnfs.ko"
 # Mount it
-mount -t lwnfs "$mntDir"
+mount -t lwnfs none "$mntDir"
 printBanner "echo mounted!"
 cd "$mntDir"
 printBanner "ls -alF"
