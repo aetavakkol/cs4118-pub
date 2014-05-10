@@ -1,0 +1,17 @@
+################################################################################
+make
+----------------------------------------
+make -C /lib/modules/3.13.11-2-ck/build M=/home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol modules
+make[1]: Entering directory '/usr/lib/modules/3.13.11-2-ck/build'
+  CC [M]  /home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol/lwnfs.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  CC      /home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol/lwnfs.mod.o
+  LD [M]  /home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol/lwnfs.ko
+make[1]: Leaving directory '/usr/lib/modules/3.13.11-2-ck/build'
+################################################################################
+################################################################################
+echo mounted!
+----------------------------------------
+mounted!
+################################################################################

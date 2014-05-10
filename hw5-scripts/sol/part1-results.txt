@@ -1,0 +1,41 @@
+################################################################################
+make
+----------------------------------------
+make -C /lib/modules/3.13.11-2-ck/build M=/home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol modules
+make[1]: Entering directory '/usr/lib/modules/3.13.11-2-ck/build'
+  CC [M]  /home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol/lwnfs.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  CC      /home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol/lwnfs.mod.o
+  LD [M]  /home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol/lwnfs.ko
+make[1]: Leaving directory '/usr/lib/modules/3.13.11-2-ck/build'
+################################################################################
+################################################################################
+echo mounted!
+----------------------------------------
+mounted!
+################################################################################
+################################################################################
+ls -alF
+----------------------------------------
+total 4
+drwxr-xr-x 3 root root     0 May 10 01:13 ./
+drwxr-xr-x 4 mark users 4096 May 10 01:13 ../
+-rw-r--r-- 1 root root     0 May 10 01:13 counter
+drwxr-xr-x 2 root root     0 May 10 01:13 subdir/
+################################################################################
+################################################################################
+ls -alF subdir
+----------------------------------------
+total 0
+drwxr-xr-x 2 root root 0 May 10 01:13 ./
+drwxr-xr-x 3 root root 0 May 10 01:13 ../
+-rw-r--r-- 1 root root 0 May 10 01:13 subcounter
+################################################################################
+################################################################################
+ls -alF /home/mark/Documents/cs4118-ta/cs4118-pub/hw5-scripts/sol/mnt
+----------------------------------------
+total 8
+drwxr-xr-x 2 root root  4096 May 10 01:13 ./
+drwxr-xr-x 4 mark users 4096 May 10 01:13 ../
+################################################################################
