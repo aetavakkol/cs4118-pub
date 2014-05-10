@@ -14,8 +14,8 @@ if [[ -z "$row" ]]; then
 	exit 2
 fi
 
-uniString="${row#*: }"
-uniString="${uniString// /\|}"
+uniString=$(echo "$row" | sed -e 's/[[:alpha:]]\+:\t//g')
+uniString=$(echo "$uniString" | sed -e 's/[[:blank:]]\+/|/g')
 
 # Unzip the archive
 unzip "$2" >/dev/null
